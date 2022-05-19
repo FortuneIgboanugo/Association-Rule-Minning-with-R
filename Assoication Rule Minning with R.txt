@@ -1,0 +1,48 @@
+TITLE:
+This study shows how the Association rule mining technique is used to analyse the 
+relationship or connection of goods bought in a single purchase.
+
+ABSTRACT:
+Association Rule Mining is a typical method for discovering connections between a large number of variables from food stores, 
+local shops, e-commerce businesses and anyone with a large business transactions database usually utilise it.
+
+Market Basket Analysis is a modelling approach founded on the idea that if you buy one set of items, 
+there's a high probability that you're likely to buy another set.
+
+Read the dataset in transactional format. This shows it has 9836 columns of transactions, 
+10036 columns of items and a density of 0.0005392746.
+It also shows the most frequently bought item as whole milk which accounts for 2513, 
+other vegetables 1903, rolls and buns 1809, soda 1715 and yoghurt 1372 as seen on the image below.
+
+
+#inspect dataset
+head(groc)
+tail(groc)
+names(groc)
+str(groc)
+summary(groc)
+dim(groc)
+
+groc$Item.s. <- NULL
+write.csv(groc, 'C:/Users/fortu/Downloads/groc.csv')
+
+#read dataset in transactions format
+groc_t <- read.transactions('C:/Users/fortu/Downloads/groc.csv', format 
+= 'basket',
+ sep = ',')
+summary(groc_t)
+
+#plot item frequency
+itemFrequencyPlot(groc_t,topN = 20, type ='absolute', col = 
+brewer.pal(3,'Pastel1'))
+
+#create model
+groc_rules <- apriori(groc_t,parameter = list(supp = 0.001, conf = 0.7)) 
+groc_rules
+summary(groc_rules)
+
+sort(groc_rules,by = 'confidence', decreasing = T)
+
+inspect(groc_rules[1:20])
+
+ruleExplorer(groc_rules)
