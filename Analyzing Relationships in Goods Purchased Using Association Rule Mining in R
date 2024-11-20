@@ -1,0 +1,67 @@
+TITLE:
+This study shows how the Association rule mining technique is used to analyse the 
+relationship or connection of goods bought in a single purchase.
+
+ABSTRACT:
+Association Rule Mining is a powerful technique for uncovering relationships between variables in large datasets, often applied in domains like retail, e-commerce, and supply chain management.
+
+This study demonstrates Market Basket Analysis, an application of Association Rule Mining, based on the principle that purchasing one set of items can indicate the likelihood of purchasing another set.
+
+Using a transactional dataset, this project explores the relationships among items purchased, identifying patterns that provide actionable business insights.
+
+METHODOLOGY:
+Dataset Overview:
+Format: Transactional
+Transactions: 9,836
+Unique Items: 10,036
+Density: 0.0005392746
+
+Key Observations:
+The most frequently purchased items:
+Whole milk: 2,513 purchases
+Other vegetables: 1,903 purchases
+Rolls and buns: 1,809 purchases
+Soda: 1,715 purchases
+Yoghurt: 1,372 purchases
+
+Data Inspection
+The dataset was inspected and preprocessed using the following R commands:
+#inspect dataset
+head(groc)
+tail(groc)
+names(groc)
+str(groc)
+summary(groc)
+dim(groc)
+
+# Remove unnecessary columns and export cleaned data
+groc$Item.s. <- NULL
+write.csv(groc, 'C:/Users/fortu/Downloads/groc.csv')
+
+Transaction Format Conversion
+The dataset was read into R in transactional format:
+#read dataset in transactions format
+groc_t <- read.transactions('C:/Users/fortu/Downloads/groc.csv', format 
+= 'basket',
+ sep = ',')
+summary(groc_t)
+
+Frequent Item Analysis
+#plot item frequency
+itemFrequencyPlot(groc_t,topN = 20, type ='absolute', col = 
+brewer.pal(3,'Pastel1'))
+
+Building Association Rules
+The Apriori Algorithm was applied to generate rules with the following parameters:
+#create model
+groc_rules <- apriori(groc_t,parameter = list(supp = 0.001, conf = 0.7)) 
+groc_rules
+summary(groc_rules)
+
+sort(groc_rules,by = 'confidence', decreasing = T)
+
+inspect(groc_rules[1:20])
+
+Rule Visualization
+Rules were explored interactively using ruleExplorer:
+ruleExplorer(groc_rules)
